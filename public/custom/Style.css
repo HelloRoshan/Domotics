@@ -1,0 +1,27 @@
+  body{
+  font-family: sans-serif;
+  font-size: 20px;
+}
+/* TABLE STYLE  
+ .nav nav-tabs{
+    font-size: 20px;
+}  */
+
+
+/* for navbar  color */
+a{
+color: #777;
+}
+
+
+
+
+
+
+/*for voice icon  */
+.fa{
+    text-align: center;
+    margin-top: 56px;
+    margin-left: 20px;
+}
+
