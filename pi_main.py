@@ -43,20 +43,19 @@ def updateLight(lightId):
 		lgt[0]['state'] = request.json['state']
 	return jsonify({'Lightdetail': lgt[0]})
 
-#There is a error in append and  jsonify
-# @app.route('/lightdb/light',methods=['POST'])
-# def createlight(): 
 
-#     dat = {
-#     	'id':request.json['id'],
-#     	'gpio':request.json['gpio'],
-#     	'description':request.json['description'],
-#     	'state': request.json['state'] }
-
-# 	lights.append(dat)
-# 	return jsonify(dat)
+@app.route('/lightdb/light',methods=['POST'])
+def createlight():
+	light = {
+     	'id':request.json['id'],
+     	'gpio':request.json['gpio'],
+     	'description':request.json['description'],
+     	'state': request.json['state'] }
+ 	lights.append(light)
+ 	return jsonify(lights)
 
 
+   
 if __name__ =='__main__':
 	app.run(debug=True, host='0.0.0.0')
 	
