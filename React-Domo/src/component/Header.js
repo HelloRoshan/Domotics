@@ -9,7 +9,7 @@ export class Header extends React.Component {
                         <div className="navbar-header">
                             <a className="navbar-brand">Dashboard</a>
                         </div>
-                        <div className="collapse navbar-collapse">
+                        {/* <div className="collapse navbar-collapse">
                             <ul className="nav navbar-nav navbar-right">
                                 <li>
                                     <a href="#">About</a>
@@ -18,7 +18,7 @@ export class Header extends React.Component {
                                     <a href="google.com">Log out</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                 </nav> 
             </div>
