@@ -8,13 +8,25 @@ import axios from 'axios';
 //     });
 // }
 
-function getRep(){
-    axios.get('http://192.168.10.211:5000/lightdb/light/3')
-    .then((response)=> {
-        console.log(response.data);
-    })
-}
-getRep();
+// function getRep(){
+//     axios.get('http://192.168.0.103:5000/api/switches')
+//     .then((response)=> {
+//         console.log(response.data);
+//     })
+// }
+// getRep();
+
+// function puRep(){
+//     axios.put('http://localhost:3000/', {
+//     firstName: 'Fred',
+//     lastName: 'Flintstone'
+// })
+
+//     .then(function (response) {
+//         console.log(response);
+//     })
+// }
+// puRep();
 
 export class Voice extends React.Component{
     constructor(){

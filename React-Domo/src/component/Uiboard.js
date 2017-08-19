@@ -1,7 +1,14 @@
 import React from 'react';
 // import axios from 'axios';
 
-// const SERVER_URL = 'http://localhost:3000';
+// function changeSwitch(switchesId, state) {
+//     axios.p('http://192.168.0.103:5000/api/switches' , + '/switches' + switchesId, {
+//         state: state
+//     })
+//     .then((response)=>{
+//         console.log(response)
+//     })
+// }
 
 export class Uiboard extends React.Component {
     constructor() {
@@ -25,15 +32,10 @@ export class Uiboard extends React.Component {
         //     const mSwitch = this.state.switches[i];
         //     changeSwitch(mSwitch.id, mSwitch.state);
         // }
+
         this.handleChange = this.handleChange.bind(this);
-        // this.changeSwitch = this.changeSwitch.bind(this);
     }
-    // changeSwitch(){
-    //     var _self = this;
-    //     axios.put(SERVER_URL + '/switches' + switches.id, {
-    //         state: state
-    //     })
-    // }
+        
     handleChange(id) {
         console.log(id);
         let index = id - 1;
