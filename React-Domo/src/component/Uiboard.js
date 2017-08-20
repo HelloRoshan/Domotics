@@ -1,31 +1,35 @@
-import React from 'react';
-// import axios from 'axios';
+    import React from 'react';
+import axios from 'axios';
 
-// function changeSwitch(switchesId, state) {
-//     axios.p('http://192.168.0.103:5000/api/switches' , + '/switches' + switchesId, {
-//         state: state
-//     })
-//     .then((response)=>{
-//         console.log(response)
-//     })
-// }
+const SERVER_URL = 'http://192.168.0.105:5000';
+//state sent 
+function changeSwitch(id, state) {
+    axios.patch(SERVER_URL + '/api/switches/' + id, {
+        // axios.patch(`${SERVER_URL}switches`, {
+        "state": state
+    })
+        .then((response) => {
+            console.log('sent')
+        });
+}
+
 
 export class Uiboard extends React.Component {
     constructor() {
         super();
         this.state = {
-            switches: [
-                {
-                    id: 1,
-                    label: "Switch 1",
-                    state: true
-                },
-                {
-                    id: 2,
-                    label: "Switch 2",
-                    state: false
-                }
-            ]
+            switches: []
+            //     {
+            //         id: 1,
+            //         label: "Switch 1",
+            //         state: true
+            //     },
+            //     {
+            //         id: 2,
+            //         label: "Switch 2",
+            //         state: false
+            //     }
+            // ]
             
         };
         // for(let i = 0; i < this.state.switches.length; ++i) {
@@ -33,20 +37,37 @@ export class Uiboard extends React.Component {
         //     changeSwitch(mSwitch.id, mSwitch.state);
         // }
 
+        this.getRep = this.getRep.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
-        
+    //fetching switches from the server
+    getRep() {
+    axios.get(SERVER_URL +'/api/switches')
+        .then((response) => {
+            // console.log(response.data);
+            this.setState({
+                switches: response.data
+            })
+        })
+    }
+    
+    //on change function    
     handleChange(id) {
         console.log(id);
         let index = id - 1;
         let newSwitches = this.state.switches.slice();
         newSwitches[index].state = !newSwitches[index].state;
-        // changeSwitch(newSwitches[index].id, newSwitches[index].state);
+        changeSwitch(newSwitches[index].id, newSwitches[index].state);
         this.setState({
             switches: newSwitches
         });
 
     }
+
+    componentDidMount(){
+        this.getRep();
+    }
+
 
     render() {
 
@@ -88,7 +109,6 @@ export class Uiboard extends React.Component {
                         {mapped}       
                     </tbody>
                 </table>
-                <p>{this.state.qutoe}</p>
             </div>
         );
     }

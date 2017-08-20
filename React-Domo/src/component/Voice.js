@@ -9,7 +9,7 @@ import axios from 'axios';
 // }
 
 // function getRep(){
-//     axios.get('http://192.168.0.103:5000/api/switches')
+//     axios.get('http://192.168.0.105:5000/api/switches')
 //     .then((response)=> {
 //         console.log(response.data);
 //     })
