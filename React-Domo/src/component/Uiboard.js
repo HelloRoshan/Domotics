@@ -1,15 +1,16 @@
     import React from 'react';
 import axios from 'axios';
 
-const SERVER_URL = 'http://localhost:5000';
+// const SERVER_URL = 'http://localhost:5000';
+const SERVER_URL = 'http://192.168.0.105:5000';
+
 //state sent 
 function changeSwitch(id, state) {
     return axios.patch(SERVER_URL + '/api/switches/' + id, {
         // axios.patch(`${SERVER_URL}switches`, {
-        // 'id': id,
         'state': state
     }).then((response) => {
-        console.log('sent')
+        console.log(response.data);
     });
 }
 
@@ -35,7 +36,7 @@ export class Uiboard extends React.Component {
     getRep() {
     axios.get(SERVER_URL +'/api/switches')
         .then((response) => {
-            // console.log(response.data);
+            console.log(response.data);
             this.setState({
                 switches: response.data
             })
@@ -56,12 +57,12 @@ export class Uiboard extends React.Component {
 
     }
 
-    // componentDidMount() {
-    //     this.timerID = setInterval(
-    //         () => this.tick(),
-    //         10000
-    //     );
-    // }
+    componentDidMount() {
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
 
     componentWillMount(){
         this.getRep();
