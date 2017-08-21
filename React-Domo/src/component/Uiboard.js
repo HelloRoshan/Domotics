@@ -1,36 +1,25 @@
     import React from 'react';
 import axios from 'axios';
 
-const SERVER_URL = 'http://192.168.0.105:5000';
+const SERVER_URL = 'http://localhost:5000';
 //state sent 
 function changeSwitch(id, state) {
-    axios.patch(SERVER_URL + '/api/switches/' + id, {
+    return axios.patch(SERVER_URL + '/api/switches/' + id, {
         // axios.patch(`${SERVER_URL}switches`, {
-        "state": state
-    })
-        .then((response) => {
-            console.log('sent')
-        });
+        // 'id': id,
+        'state': state
+    }).then((response) => {
+        console.log('sent')
+    });
 }
 
 
 export class Uiboard extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            switches: []
-            //     {
-            //         id: 1,
-            //         label: "Switch 1",
-            //         state: true
-            //     },
-            //     {
-            //         id: 2,
-            //         label: "Switch 2",
-            //         state: false
-            //     }
-            // ]
-            
+            switches: [],
+            date: new Date()
         };
         // for(let i = 0; i < this.state.switches.length; ++i) {
         //     const mSwitch = this.state.switches[i];
@@ -39,7 +28,9 @@ export class Uiboard extends React.Component {
 
         this.getRep = this.getRep.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        // this.changeSwitch = this.changeSwitch.bind(this);
     }
+    
     //fetching switches from the server
     getRep() {
     axios.get(SERVER_URL +'/api/switches')
@@ -50,6 +41,7 @@ export class Uiboard extends React.Component {
             })
         })
     }
+
     
     //on change function    
     handleChange(id) {
@@ -64,13 +56,26 @@ export class Uiboard extends React.Component {
 
     }
 
-    componentDidMount(){
+    // componentDidMount() {
+    //     this.timerID = setInterval(
+    //         () => this.tick(),
+    //         10000
+    //     );
+    // }
+
+    componentWillMount(){
         this.getRep();
     }
 
+    //setting timer for rendering
+    tick() {
+        this.setState({
+            date: new Date(),
+        })
+    }
 
     render() {
-
+        console.log(this.state.switches);
         var mapped = this.state.switches.map((data) => {
             return (
                 <tr key={data.id}>
@@ -96,6 +101,7 @@ export class Uiboard extends React.Component {
 
         return (
             <div>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
                 <h2>Switch!!</h2>
                 <table className="table table-striped">
                     <thead>
