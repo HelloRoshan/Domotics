@@ -3,7 +3,7 @@ import time
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 
-pin =[2,3]
+pin = [2, 3]
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin, GPIO.IN)
 GPIO.setwarnings(False)
@@ -28,9 +28,10 @@ switches = [
     }
 ]
 
+
 def click(switchId):
     if switchId == 1:
-        if request.json['state']== True:
+        if request.json['state'] == True:
             GPIO.setup(2, GPIO.OUT)
             GPIO.output(2, GPIO.HIGH)
             return " Switch 1 is on "
@@ -39,7 +40,7 @@ def click(switchId):
             GPIO.output(2, GPIO.LOW)
             return " Switch 1 is off "
     elif switchId == 2:
-        if request.json['state']== True:
+        if request.json['state'] == True:
             GPIO.setup(3, GPIO.OUT)
             GPIO.output(3, GPIO.HIGH)
             return " Switch 2 is on "
@@ -64,7 +65,6 @@ def hello():
     return '<h1>Hello Team Domotics</h1>'
 
 
-
 @app.route('/api/switches', methods=['GET'])
 @cross_origin()
 def getAllswitch():
@@ -74,7 +74,7 @@ def getAllswitch():
 @app.route('/api/switches/<int:switchId>', methods=['GET'])
 @cross_origin()
 def getswitch(switchId):
-    specswitch = [switch for switch in switches if switch['id'] == switchId ]
+    specswitch = [switch for switch in switches if switch['id'] == switchId]
     return jsonify(specswitch)
 
 
@@ -85,18 +85,18 @@ def turn_switch(switchId):
     return updateswitch(switchId)
 
 
-@app.route('/api/switches',methods=['POST'])
+@app.route('/api/switches', methods=['POST'])
 @cross_origin()
 def createswitch():
     switch = {
         'id': request.json['id'],
-        'gpio':request.json['gpio'],
-        'description':request.json['description'],
+        'gpio': request.json['gpio'],
+        'description': request.json['description'],
         'state': request.json['state']
     }
     switches.append(switch)
     return jsonify(switches)
 
 
-if __name__ =='__main__':
+if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
