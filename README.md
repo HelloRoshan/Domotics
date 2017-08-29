@@ -1,13 +1,20 @@
 # Domotics
-Home Automation System
-using Raspberry Pi
+Home Automation System using Raspberry Pi
 
-Front End Tools:
-  JavaScript,
-  React JS,
-  Bootstrap,
-  Axios
+## Languages
+  - JavaScript
+  - Python
+  - HTML
+  - CSS
   
-Back End Tools:
-  Python,
-  Flask
+## Frameworks
+  - Flask
+  - React
+  
+## Libraries and Technologies
+  - Node Technologies
+    - Webpack
+  - Python Technologies
+    - Flask-cors
+    - RPi.GPIO
+    
