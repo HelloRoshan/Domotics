@@ -2,7 +2,7 @@
 /*table font  */
 .table{
   font-family: sans-serif;
-  font-size: 20px;
+  font-size: 16spx;
   }
 
 /*heading   */
@@ -10,8 +10,15 @@
 h2{
   color: #777;
 }
+h3{
+  color: #777;
+}
 h4{
   color: #777;
+}
+.h4st{
+  margin-top: 214px;
+  margin-left: -110px;
 }
 tbody{
   color: #777;

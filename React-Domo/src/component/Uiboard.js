@@ -1,8 +1,9 @@
-    import React from 'react';
+import React from 'react';
 import axios from 'axios';
-
-// const SERVER_URL = 'http://localhost:5000';
-const SERVER_URL = 'http://192.168.0.105:5000';
+import annyang from 'annyang';
+`s`
+const SERVER_URL = 'http://192.168.137.1:5000';
+// const SERVER_URL = 'http://192.168.10.20:5000';
 
 //state sent 
 function changeSwitch(id, state) {
@@ -10,6 +11,7 @@ function changeSwitch(id, state) {
         // axios.patch(`${SERVER_URL}switches`, {
         'state': state
     }).then((response) => {
+        response.data;
         console.log(response.data);
     });
 }
@@ -20,15 +22,13 @@ export class Uiboard extends React.Component {
         super(props);
         this.state = {
             switches: [],
-            date: new Date()
+            date: new Date(),
+            color: "black"
         };
-        // for(let i = 0; i < this.state.switches.length; ++i) {
-        //     const mSwitch = this.state.switches[i];
-        //     changeSwitch(mSwitch.id, mSwitch.state);
-        // }
 
         this.getRep = this.getRep.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this .activateAnnyang = this.activateAnnyang.bind(this);
         // this.changeSwitch = this.changeSwitch.bind(this);
     }
     
@@ -57,6 +57,88 @@ export class Uiboard extends React.Component {
 
     }
 
+    // Main function for annyang speech recognition .
+    activateAnnyang() {
+        annyang.debug();
+        annyang.addCallback('soundstart', function() {
+            console.log('listening');
+        });
+        var color = this.state.color;
+        var availableSwitches = this.state.switches.slice();
+        var command = {
+            '(switch) :switchName :state' : function(switchName, state) {
+                 if(state === 'on'){
+                    state = true;
+                }
+                if(state === 'off' | state === 'of'){
+                    state = false;
+                }
+                // if (name === 'be'){
+                //     name = 'b';
+                // }
+
+                if (switchName === 'two' | switchName === 'to'){
+                    switchName = 'be';
+                }
+
+                if (switchName === 'one'){
+                    switchName = 'a';
+                }
+
+                if(state === true | state === false) {
+                    console.log(switchName + " to " + state);
+                   
+                    availableSwitches.map((data, index) => {
+                        // console.log(index);
+                        if(data.name === switchName && data.state !== state) {
+                            console.log(data.state);
+                            
+                            changeSwitch(data.id, state).then((data) => {
+                                // console.log(data);
+                                this.setState({
+                                    switches: availableSwitches
+                                })
+                                
+                                window.location.reload()
+                                console.log(this.state.switches)
+                                return data;
+                            });
+                        } else {
+                            console.log("switch name not matched or position matched!");
+                            color = "black";
+                            this.setState({
+                                color
+                            })
+                        }
+                });
+                } else {
+                    console.log("state not matched!");
+                }
+                
+                // console.log(state);
+            }.bind(this)
+        }
+        this.setState({
+            switches: availableSwitches
+        });
+        annyang.addCommands(command);
+        annyang.start({ autoRestart: false, continuous: false });
+
+        annyang.addCallback('result', function() {
+            color = "black";
+            this.setState({
+                color
+            })
+        }.bind(this));
+        
+        color = "red";
+        this.setState({
+            color
+        })
+    }
+
+
+
     componentDidMount() {
         this.timerID = setInterval(
             () => this.tick(),
@@ -68,7 +150,7 @@ export class Uiboard extends React.Component {
         this.getRep();
     }
 
-    //setting timer for rendering
+//    setting timer for rendering
     tick() {
         this.setState({
             date: new Date(),
@@ -78,6 +160,7 @@ export class Uiboard extends React.Component {
     render() {
         console.log(this.state.switches);
         var mapped = this.state.switches.map((data) => {
+                                // {console.log(data.state)}
             return (
                 <tr key={data.id}>
                     <td>{data.label}</td>
@@ -90,7 +173,7 @@ export class Uiboard extends React.Component {
                             /> 
                             {/* () => and bind creates a new function */}
                             {/* onChange = {() => this.handleChange(data.id)} */}
-                            <span className="slider round" data-on="Active" data-off="Inactive"></span>
+                            <span className="slider round"></span>
                         </label>
                     </td>
                     <td>
@@ -102,20 +185,38 @@ export class Uiboard extends React.Component {
 
         return (
             <div>
-                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-                <h2>Switch!!</h2>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th><h4>Name</h4></th>
-                            <th><h4>Status</h4></th>
-                            <th><h4>State</h4></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {mapped}       
-                    </tbody>
-                </table>
+                <div className="container" style={{ marginTop: '85px' }}>
+                    {/* card */}
+                    <div className="row">
+                        <div className="col-sm-8">
+                            <h2>Switch</h2>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><h4>Name</h4></th>
+                                        <th><h4>Status</h4></th>
+                                        <th><h4>State</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {mapped}
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        <div className="sol-sm-3">
+                            <div>
+                                <div>
+                                    {console.log(this.state.color)}
+                                    <a href="#" className={(this.state.color === "black")? "blackMic" : "redMic"} onClick = {this.activateAnnyang.bind(this)}> <i className="fa fa-microphone fa-5x" aria-hidden="true"></i></a>
+                                </div>
+                            </div> 
+                        </div>
+                        {/*<div className="sol-sm-1">
+                            <h4 className="h4st"> {this.state.date.toLocaleTimeString()} </h4>
+                        </div>*/}
+                    </div>
+                </div>
             </div>
         );
     }

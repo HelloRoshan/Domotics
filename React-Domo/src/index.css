@@ -3,3 +3,17 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.redMic,
+.redMic:hover,
+.redMic:focus {
+  text-decoration: none;
+  color: red;
+}
+
+.blackMic,
+.blackMic:hover,
+.blackMic:focus {
+  text-decoration: none;
+  color: black;
+}
