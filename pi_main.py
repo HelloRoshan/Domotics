@@ -91,8 +91,9 @@ def createswitch():
     switch = {
         'id': request.json['id'],
         'gpio': request.json['gpio'],
-        'description': request.json['description'],
-        'state': request.json['state']
+        'label': request.json['label'],
+        'name': request.json['name'],
+        'state': GPIO.input(request.json['gpio'])
     }
     switches.append(switch)
     return jsonify(switches)
